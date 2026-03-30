@@ -2,9 +2,9 @@
   "mcpServers": {
     "claude-cast": {
       "command": "bun",
-      "args": ["/Users/kareem/Desktop/claude-cast/packages/stream-server/server.ts"],
+      "args": ["${CLAUDE_PLUGIN_ROOT}/packages/stream-server/server.ts"],
       "env": {
-        "CLAUDE_CAST_ROOT": "/Users/kareem/Desktop/claude-cast"
+        "CLAUDE_CAST_ROOT": "${CLAUDE_PLUGIN_ROOT}"
       }
     }
   }
