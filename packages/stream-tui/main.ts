@@ -74,14 +74,22 @@ currentLayout.render(screen, state, chatMessages);
 function switchLayout(mode: LayoutMode): void {
   currentLayout.destroy();
   state.layout = mode;
+  currentLayoutMode = mode;
   currentLayout = layouts[mode]();
   currentLayout.render(screen, state, chatMessages);
   screen.render();
 }
 
+let currentLayoutMode: LayoutMode = state.layout;
+
 function refresh(): void {
   loadStateFromFile();
   loadChatFromFile();
+  // Switch layout if state changed it (e.g. via /claude-cast layout rich)
+  if (state.layout !== currentLayoutMode) {
+    switchLayout(state.layout);
+    return;
+  }
   currentLayout.render(screen, state, chatMessages);
   screen.render();
 }
@@ -109,9 +117,10 @@ screen.key(["c"], () => {
 });
 
 screen.key(["l"], () => {
-  const idx = LAYOUT_CYCLE.indexOf(state.layout);
+  const idx = LAYOUT_CYCLE.indexOf(currentLayoutMode);
   const next = LAYOUT_CYCLE[(idx + 1) % LAYOUT_CYCLE.length];
   switchLayout(next);
+  writeCommand(`layout:${next}`);
 });
 
 screen.key(["up"], () => {

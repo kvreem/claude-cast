@@ -13,6 +13,7 @@
     "sourceMap": true,
     "outDir": "./dist",
     "rootDir": ".",
+    "types": ["@types/bun"],
     "paths": {
       "@claude-cast/shared": ["./packages/shared/index.ts"],
       "@claude-cast/shared/*": ["./packages/shared/*"]

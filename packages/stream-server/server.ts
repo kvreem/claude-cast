@@ -354,6 +354,11 @@ setInterval(async () => {
         await player.setVolume(level);
         updateState({ volume: level });
       }
+    } else if (cmd.startsWith("layout:")) {
+      const mode = cmd.split(":")[1] as "compact" | "rich" | "minimal";
+      if (["compact", "rich", "minimal"].includes(mode)) {
+        updateState({ layout: mode });
+      }
     }
   } catch {
     // ignore command errors
