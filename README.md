@@ -1,13 +1,24 @@
 <div align="center">
-  <img src=".github/assets/banner.png" width="100%" alt="claude-cast" />
 
-  <h1>claude-cast</h1>
-  <p>Stream Twitch, YouTube, and Kick right inside Claude Code.</p>
+```
+▁▃▅▇█▇▅▃▁▂▅▇▆▃▁▃▅▇█▇▅▃▁▂▅▇▆▃▁▃▅▇█▇▅▃▁▂▅▇▆▃▁▃▅▇█▇▅▃▁▂▅▇▆▃▁▃▅▇█▇▅▃▁▂▅▇▆▃
+
+ ██████╗██╗      █████╗ ██╗   ██╗██████╗ ███████╗       ██████╗ █████╗ ███████╗████████╗
+██╔════╝██║     ██╔══██╗██║   ██║██╔══██╗██╔════╝      ██╔════╝██╔══██╗██╔════╝╚══██╔══╝
+██║     ██║     ███████║██║   ██║██║  ██║█████╗  █████╗██║     ███████║███████╗   ██║
+██║     ██║     ██╔══██║██║   ██║██║  ██║██╔══╝  ╚════╝██║     ██╔══██║╚════██║   ██║
+╚██████╗███████╗██║  ██║╚██████╔╝██████╔╝███████╗      ╚██████╗██║  ██║███████║   ██║
+ ╚═════╝╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚══════╝       ╚═════╝╚═╝  ╚═╝╚══════╝   ╚═╝
+
+▁▃▅▇█▇▅▃▁▂▅▇▆▃▁▃▅▇█▇▅▃▁▂▅▇▆▃▁▃▅▇█▇▅▃▁▂▅▇▆▃▁▃▅▇█▇▅▃▁▂▅▇▆▃▁▃▅▇█▇▅▃▁▂▅▇▆▃
+```
+
+  <h3>Stream Twitch, YouTube, and Kick right inside Claude Code.</h3>
 
   <a href="#quick-start">Quick Start</a> ·
   <a href="#features">Features</a> ·
   <a href="#commands">Commands</a> ·
-  <a href="https://github.com/kareem/claude-cast/issues">Issues</a>
+  <a href="https://github.com/kvreem/claude-cast/issues">Issues</a>
 </div>
 
 ---
