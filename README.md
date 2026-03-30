@@ -33,8 +33,21 @@ Install the plugin in Claude Code:
 
 Start a stream:
 
-```
+```bash
+# Twitch — just the channel name
 /claude-cast shroud
+
+# Twitch — full URL works too
+/claude-cast https://www.twitch.tv/swagg
+
+# Kick
+/claude-cast kick.com/myrongainesx
+
+# YouTube
+/claude-cast https://www.youtube.com/live/dQw4w9WgXcQ
+
+# Force a platform
+/claude-cast xqc kick
 ```
 
 That's it. Audio plays. Chat scrolls. Code continues.
