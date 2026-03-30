@@ -184,7 +184,7 @@ bun test             # Run tests
 
 ## Repository Activity
 
-![Repobeats](https://repobeats.axiom.co/api/embed/placeholder.svg "Repobeats analytics image")
+![Alt](https://repobeats.axiom.co/api/embed/84913fd11b6764721df414bcf5a0f409d2c85729.svg "Repobeats analytics image")
 
 ---
 
