@@ -1,13 +1,16 @@
 <div align="center">
 
 ```
-               _                 _                              _
-         ___  | |   __ _  _   _ | |  ___         ___  __ _  ___ | |_
-        / __| | |  / _` || | | || | / _ \ _____ / __|/ _` |/ __|| __|
-       | (__  | | | (_| || |_| || ||  __/|_____|| (__| (_| |\__ \| |_
-        \___| |_|  \__,_| \__,_||_| \___|       \___|\__,_||___/ \__|
+▁▃▅▇█▇▅▃▁▂▅▇▆▃▁▃▅▇█▇▅▃▁▂▅▇▆▃▁▃▅▇█▇▅▃▁▂▅▇▆▃▁▃▅▇█▇▅▃▁▂▅▇▆▃▁▃▅▇█▇▅▃▁▂▅▇▆▃
 
-        ▁▃▅▇█▇▅▃▁▂▅▇▆▃▁▃▅▇█▇▅▃▁▂▅▇▆▃▁▃▅▇█▇▅▃▁▂▅▇▆▃
+ ██████╗██╗      █████╗ ██╗   ██╗██████╗ ███████╗       ██████╗ █████╗ ███████╗████████╗
+██╔════╝██║     ██╔══██╗██║   ██║██╔══██╗██╔════╝      ██╔════╝██╔══██╗██╔════╝╚══██╔══╝
+██║     ██║     ███████║██║   ██║██║  ██║█████╗  █████╗██║     ███████║███████╗   ██║
+██║     ██║     ██╔══██║██║   ██║██║  ██║██╔══╝  ╚════╝██║     ██╔══██║╚════██║   ██║
+╚██████╗███████╗██║  ██║╚██████╔╝██████╔╝███████╗      ╚██████╗██║  ██║███████║   ██║
+ ╚═════╝╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚══════╝       ╚═════╝╚═╝  ╚═╝╚══════╝   ╚═╝
+
+▁▃▅▇█▇▅▃▁▂▅▇▆▃▁▃▅▇█▇▅▃▁▂▅▇▆▃▁▃▅▇█▇▅▃▁▂▅▇▆▃▁▃▅▇█▇▅▃▁▂▅▇▆▃▁▃▅▇█▇▅▃▁▂▅▇▆▃
 ```
 
   <h3>Stream Twitch, YouTube, and Kick right inside Claude Code.</h3>
@@ -20,15 +23,30 @@
 
 ---
 
-## Quick Start
+## Setup
 
-Install the plugin in Claude Code:
+### 1. Install dependencies
+
+```bash
+brew install mpv streamlink tmux
+```
+
+### 2. Start a tmux session
+
+claude-cast runs as a side pane in tmux. Start tmux first, then launch Claude Code inside it.
+
+```bash
+tmux new-session -s dev
+claude
+```
+
+### 3. Install the plugin
 
 ```
 /plugin install claude-cast
 ```
 
-Start a stream:
+### 4. Start a stream
 
 ```bash
 # Twitch — just the channel name
@@ -47,7 +65,7 @@ Start a stream:
 /claude-cast xqc kick
 ```
 
-That's it. Audio plays. Chat scrolls. Code continues.
+Audio plays. Chat scrolls. Code continues.
 
 ---
 
@@ -110,16 +128,21 @@ Every action available as a Claude Code command for AI-assisted control.
 ## Architecture
 
 ```
-┌─ Terminal (tmux) ─────────────────────────────────┐
-│                                                    │
-│  Claude Code          │  claude-cast TUI           │
-│  (your work)          │  (player + chat)           │
-│                       │                            │
-└───────────────────────┴────────────────────────────┘
-         │                        │
-         │ MCP (stdio)            │ IPC (unix socket)
-         ▼                        │
-    stream-server ◄───────────────┘
+┌─ Terminal (tmux) ──────────────────────────────────────┐
+│                                                        │
+│  Claude Code             │  claude-cast TUI            │
+│  (your work)             │  (player + chat)            │
+│                          │                             │
+│  > /claude-cast swagg    │  ▶ swagg  ▁▃▅▇█▇▅▃ Vol:75% │
+│  Now streaming swagg...  │  user1: nice play!          │
+│                          │  user2: GG                  │
+│  > fixing bugs...        │  user3: lol                 │
+│                          │                             │
+└──────────────────────────┴─────────────────────────────┘
+         │                          │
+         │ MCP (stdio)              │ file-based IPC
+         ▼                          │
+    stream-server ◄─────────────────┘
       │       │
       ▼       ▼
     mpv    chat (IRC/WS/API)
@@ -136,7 +159,7 @@ Every action available as a Claude Code command for AI-assisted control.
 | TUI | neo-blessed |
 | Audio | mpv + streamlink |
 | Chat | Twitch IRC · YouTube API · Kick WebSocket |
-| IPC | Unix socket + ndjson |
+| IPC | File-based state + ndjson |
 | Monorepo | Bun workspaces |
 
 ---
@@ -158,11 +181,15 @@ claude-cast/
 
 ## Requirements
 
-- Claude Code (latest)
-- macOS or Linux
-- mpv — `brew install mpv`
-- streamlink — `brew install streamlink`
-- tmux — auto-installed on first run
+| Dependency | Install | Purpose |
+|-----------|---------|---------|
+| **Claude Code** | [claude.com/code](https://claude.com/code) | Plugin host |
+| **tmux** | `brew install tmux` | Side pane for player + chat |
+| **mpv** | `brew install mpv` | Audio playback |
+| **streamlink** | `brew install streamlink` | Stream URL extraction |
+| **Bun** | Required by Claude Code | Plugin runtime |
+
+Supported on **macOS** and **Linux**.
 
 ---
 
@@ -170,11 +197,13 @@ claude-cast/
 
 Run `/claude-cast:configure` to set:
 
-- **Default layout** — compact, rich, or minimal
-- **Default volume** — 0-100
-- **Tmux pane width** — columns (default: 40)
-- **YouTube API key** — required for YouTube chat
-- **Twitch Client ID** — optional, for richer stream metadata
+| Setting | Description | Default |
+|---------|-------------|---------|
+| `layout` | Default layout: `compact`, `rich`, or `minimal` | `compact` |
+| `volume` | Default volume (0-100) | `75` |
+| `pane-width` | Tmux pane width in columns | `40` |
+| `youtube-api-key` | Required for YouTube chat | — |
+| `twitch-client-id` | Optional, for richer stream metadata | — |
 
 Config stored at `~/.claude/channels/claude-cast/config.json`.
 
@@ -187,7 +216,7 @@ We welcome contributions. See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 **Development setup:**
 
 ```bash
-git clone https://github.com/kareem/claude-cast
+git clone https://github.com/kvreem/claude-cast
 cd claude-cast
 bun install
 bun run dev
