@@ -1,0 +1,15 @@
+{
+  "name": "@claude-cast/stream-tui",
+  "version": "0.1.0",
+  "private": true,
+  "main": "main.ts",
+  "scripts": {
+    "start": "bun main.ts",
+    "dev": "bun --watch main.ts",
+    "typecheck": "bun x tsc --noEmit"
+  },
+  "dependencies": {
+    "neo-blessed": "^0.2.0",
+    "@claude-cast/shared": "workspace:*"
+  }
+}

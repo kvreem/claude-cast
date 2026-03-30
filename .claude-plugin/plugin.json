@@ -1,0 +1,7 @@
+{
+  "name": "claude-cast",
+  "version": "0.1.0",
+  "description": "Stream Twitch, YouTube, and Kick right inside Claude Code. Audio plays via mpv, chat scrolls in a tmux pane, and your code keeps flowing.",
+  "author": { "name": "kareem" },
+  "keywords": ["stream", "twitch", "youtube", "kick", "audio", "chat", "tui"]
+}

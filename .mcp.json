@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "claude-cast": {
+      "command": "bun",
+      "args": ["/Users/kareem/Desktop/claude-cast/packages/stream-server/server.ts"],
+      "env": {
+        "CLAUDE_CAST_ROOT": "/Users/kareem/Desktop/claude-cast"
+      }
+    }
+  }
+}

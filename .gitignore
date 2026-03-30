@@ -1,0 +1,19 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.DS_Store
+*.log
+
+# Environment
+.env
+.env.local
+
+# State files (user-specific)
+state.json
+
+# IDE
+.vscode/
+.idea/
+
+# Bun
+bun.lockb

@@ -1,0 +1,10 @@
+{
+  "name": "@claude-cast/shared",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.ts",
+  "types": "index.ts",
+  "scripts": {
+    "typecheck": "bun x tsc --noEmit"
+  }
+}

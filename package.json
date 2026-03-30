@@ -1,0 +1,17 @@
+{
+  "name": "claude-cast",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Stream Twitch, YouTube, and Kick right inside Claude Code.",
+  "workspaces": ["packages/*"],
+  "scripts": {
+    "dev": "bun run --cwd packages/stream-server dev & bun run --cwd packages/stream-tui dev",
+    "build": "bun run --filter '*' build",
+    "typecheck": "bun run --filter '*' typecheck",
+    "lint": "bunx biome check .",
+    "lint:fix": "bunx biome check --write .",
+    "format": "bunx biome format --write .",
+    "test": "bun test"
+  },
+  "license": "MIT"
+}

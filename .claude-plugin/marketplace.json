@@ -1,0 +1,16 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "claude-cast-local",
+  "description": "Local marketplace for claude-cast development",
+  "owner": {
+    "name": "kareem"
+  },
+  "plugins": [
+    {
+      "name": "claude-cast",
+      "description": "Stream Twitch, YouTube, and Kick right inside Claude Code",
+      "version": "0.1.0",
+      "source": "./"
+    }
+  ]
+}
