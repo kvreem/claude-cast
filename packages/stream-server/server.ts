@@ -376,9 +376,12 @@ setInterval(async () => {
         updateState({ layout: mode });
       }
     } else if (cmd === "video") {
-      const state = getState();
-      if (state.channel && state.platform) {
-        await player.toggleVideo(state.channel, state.platform);
+      const st = getState();
+      if (st.channel && st.platform) {
+        await player.toggleVideo(st.channel, st.platform);
+      } else if (player.isVideoOpen()) {
+        // If video is open but no stream state, just close it
+        await player.toggleVideo("", "twitch");
       }
     }
   } catch {

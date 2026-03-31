@@ -81,12 +81,14 @@ function switchLayout(mode: LayoutMode): void {
 }
 
 let currentLayoutMode: LayoutMode = state.layout;
+let ignoreStateLayoutUntil = 0;
 
 function refresh(): void {
   loadStateFromFile();
   loadChatFromFile();
   // Switch layout if state changed it (e.g. via /claude-cast layout rich)
-  if (state.layout !== currentLayoutMode) {
+  // But skip if a hotkey recently changed it (avoid race condition)
+  if (state.layout !== currentLayoutMode && Date.now() > ignoreStateLayoutUntil) {
     switchLayout(state.layout);
     return;
   }
@@ -119,6 +121,7 @@ screen.key(["c"], () => {
 screen.key(["l"], () => {
   const idx = LAYOUT_CYCLE.indexOf(currentLayoutMode);
   const next = LAYOUT_CYCLE[(idx + 1) % LAYOUT_CYCLE.length];
+  ignoreStateLayoutUntil = Date.now() + 2000; // ignore state file for 2s
   switchLayout(next);
   writeCommand(`layout:${next}`);
 });
