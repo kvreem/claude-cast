@@ -134,12 +134,14 @@ export class PlayerEngine {
       "mpv",
       [
         url,
+        "--no-audio",
         "--no-border",
         "--ontop",
         "--geometry=400x250+50+50",
         "--title=claude-cast",
         "--really-quiet",
         "--no-input-default-bindings",
+        "--macos-app-activation-policy=accessory",
       ],
       {
         stdio: "ignore",
