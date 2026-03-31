@@ -44,8 +44,18 @@ export class TuiBridge {
       }
     }
 
-    // Ensure tmux is available
-    await this.ensureTmux();
+    // Check if we're in tmux
+    if (!process.env.TMUX) {
+      // Not in tmux — skip TUI pane, audio + video still work
+      return;
+    }
+
+    // Check if tmux is available
+    try {
+      await exec("command -v tmux");
+    } catch {
+      return; // tmux not installed, skip TUI
+    }
 
     // Spawn TUI in a tmux pane
     const config = getConfig();
@@ -63,11 +73,8 @@ export class TuiBridge {
 
       // Focus back to the Claude Code pane
       await exec("tmux select-pane -L").catch(() => {});
-    } catch (err) {
-      throw new Error(
-        `Failed to open TUI pane. Make sure you're in a tmux session. ` +
-          `Error: ${err instanceof Error ? err.message : String(err)}`
-      );
+    } catch {
+      // Failed to open pane — not critical, audio + video still work
     }
   }
 
@@ -145,23 +152,6 @@ export class TuiBridge {
     // For now, the TUI sends commands back over IPC and the server processes them
   }
 
-  private async ensureTmux(): Promise<void> {
-    try {
-      await exec("command -v tmux");
-    } catch {
-      // tmux not found — attempt to install
-      const platform = process.platform;
-      if (platform === "darwin") {
-        throw new Error(
-          "tmux is required but not installed. Install with: brew install tmux"
-        );
-      } else {
-        throw new Error(
-          "tmux is required but not installed. Install with: sudo apt install tmux (Debian/Ubuntu) or sudo yum install tmux (RHEL/CentOS)"
-        );
-      }
-    }
-  }
 
   async cleanup(): Promise<void> {
     if (this.stateInterval) {
