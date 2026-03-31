@@ -137,6 +137,10 @@ screen.key(["down"], () => {
   refresh();
 });
 
+screen.key(["v"], () => {
+  writeCommand("video");
+});
+
 screen.key(["q"], () => {
   process.exit(0);
 });

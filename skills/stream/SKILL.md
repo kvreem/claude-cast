@@ -1,8 +1,8 @@
 ---
-name: stream
+name: claude-cast
 description: Control a live stream player. Stream Twitch, YouTube, or Kick alongside your code. Triggers on "stream", "watch", "tune in", "twitch", "youtube", "kick", "listen to".
 user-invocable: true
-argument-hint: <channel> [twitch|youtube|kick] | pause | play | mute | unmute | volume <0-100> | hide-chat | show-chat | hide-player | show-player | layout <mode> | stop | status
+argument-hint: <channel> [twitch|youtube|kick] | pause | play | mute | unmute | volume <0-100> | hide-chat | show-chat | hide-player | show-player | layout <mode> | video | stop | status
 allowed-tools:
   - mcp__claude-cast__cast_play
   - mcp__claude-cast__cast_pause
@@ -16,6 +16,7 @@ allowed-tools:
   - mcp__claude-cast__cast_hide_tui
   - mcp__claude-cast__cast_chat_mode
   - mcp__claude-cast__cast_layout
+  - mcp__claude-cast__cast_video
   - Bash(${CLAUDE_PLUGIN_ROOT}/scripts/check-deps.sh)
 ---
 
@@ -70,6 +71,9 @@ Call `cast_show_tui`. Confirm pane opened.
 
 ### `layout <mode>`
 Call `cast_layout` with the mode (`compact`, `rich`, or `minimal`). Confirm layout changed.
+
+### `video`
+Call `cast_video`. Toggles a floating HD video window on the desktop. Call again to close it.
 
 ### `stop`
 Call `cast_stop`. Confirm everything stopped and cleaned up.

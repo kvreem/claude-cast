@@ -9,7 +9,9 @@ const exec = promisify(execCb);
 
 export class PlayerEngine {
   private mpvProcess: ReturnType<typeof import("node:child_process").spawn> | null = null;
+  private videoProcess: ReturnType<typeof import("node:child_process").spawn> | null = null;
   private socketPath: string;
+  private currentStreamUrl: string | null = null;
 
   constructor() {
     this.socketPath = "/tmp/claude-cast-mpv.sock";
@@ -30,6 +32,9 @@ export class PlayerEngine {
     } catch {
       // doesn't exist, fine
     }
+
+    // Store URL for video window
+    this.currentStreamUrl = url;
 
     // Start mpv in headless audio-only mode with IPC socket
     const { spawn } = await import("node:child_process");
@@ -105,6 +110,51 @@ export class PlayerEngine {
     }
   }
 
+  async toggleVideo(channel: string, platform: Platform): Promise<void> {
+    if (this.videoProcess) {
+      // Close video window
+      try {
+        this.videoProcess.kill("SIGTERM");
+      } catch {
+        // already dead
+      }
+      this.videoProcess = null;
+      return;
+    }
+
+    // Open video window — resolve URL if we don't have one
+    let url = this.currentStreamUrl;
+    if (!url) {
+      const streamUrl = getStreamUrl(channel, platform);
+      url = await this.resolveStreamUrl(streamUrl);
+    }
+
+    const { spawn } = await import("node:child_process");
+    this.videoProcess = spawn(
+      "mpv",
+      [
+        url,
+        "--no-border",
+        "--ontop",
+        "--geometry=400x250+50+50",
+        "--title=claude-cast",
+        "--really-quiet",
+        "--no-input-default-bindings",
+      ],
+      {
+        stdio: "ignore",
+      }
+    );
+
+    this.videoProcess.on("exit", () => {
+      this.videoProcess = null;
+    });
+  }
+
+  isVideoOpen(): boolean {
+    return this.videoProcess !== null;
+  }
+
   async stop(): Promise<void> {
     try {
       await this.sendMpvCommand("quit");
@@ -120,6 +170,18 @@ export class PlayerEngine {
       }
       this.mpvProcess = null;
     }
+
+    // Kill video window
+    if (this.videoProcess) {
+      try {
+        this.videoProcess.kill("SIGTERM");
+      } catch {
+        // already dead
+      }
+      this.videoProcess = null;
+    }
+
+    this.currentStreamUrl = null;
 
     // Clean up socket
     try {

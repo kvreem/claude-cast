@@ -142,6 +142,11 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
         required: ["mode"],
       },
     },
+    {
+      name: "cast_video",
+      description: "Toggle a floating HD video window. Opens a borderless, always-on-top mpv window on your desktop.",
+      inputSchema: { type: "object" as const, properties: {} },
+    },
   ],
 }));
 
@@ -275,6 +280,17 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       return text(`Layout changed to ${mode}.`);
     }
 
+    case "cast_video": {
+      const state = getState();
+      if (state.status === "idle" || !state.channel || !state.platform) {
+        return text("No active stream. Start one first with `/claude-cast <channel>`.");
+      }
+      await player.toggleVideo(state.channel, state.platform);
+      return text(player.isVideoOpen()
+        ? "Video window opened. Drag it anywhere on your screen."
+        : "Video window closed.");
+    }
+
     default:
       return text(`Unknown tool: ${name}`);
   }
@@ -358,6 +374,11 @@ setInterval(async () => {
       const mode = cmd.split(":")[1] as "compact" | "rich" | "minimal";
       if (["compact", "rich", "minimal"].includes(mode)) {
         updateState({ layout: mode });
+      }
+    } else if (cmd === "video") {
+      const state = getState();
+      if (state.channel && state.platform) {
+        await player.toggleVideo(state.channel, state.platform);
       }
     }
   } catch {

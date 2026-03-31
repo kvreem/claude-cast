@@ -20,7 +20,7 @@ export function createControlsBar(
   });
 
   box.setContent(
-    "{bold}p{/}:pause  {bold}m{/}:mute  {bold}c{/}:chat  {bold}l{/}:layout  " +
+    "{bold}p{/}:pause  {bold}m{/}:mute  {bold}v{/}:video  {bold}c{/}:chat  {bold}l{/}:layout  " +
       "{bold}\u2191\u2193{/}:vol\n" +
       "{bold}q{/}:hide  {bold}Q{/}:quit"
   );
